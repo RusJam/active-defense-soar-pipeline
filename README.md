@@ -1,6 +1,7 @@
 **Active Defense SOAR Pipeline: Automated Threat Detection, AI Enrichment, and Network Containment**
 
-Project Overview
+**Project Overview**
+
 This project documents the design and implementation of a closed-loop incident response ecosystem. The pipeline bridges the gap between threat detection and automated remediation by handling security telemetry across a distributed network. When a high-fidelity threat is detected on an endpoint, the system automatically isolates the compromised host at the network layer, enriches the alert context using a local large language model, logs a structured ticket into an enterprise case management system, and dispatches a detailed notification to the security team. By eliminating human latency from the containment loop, the system reduces the mean time to remediate from minutes to less than seven seconds.
 
 **System Architecture and Data Flow**
@@ -38,7 +39,8 @@ The following map illustrates how security telemetry cascades through the enviro
 
 **ChatOps Notification**: The final triaged output is pushed to a dedicated security operations communication channel.
 
-Core Technology Stack
+**Core Technology Stack**
+
 SIEM and Detection Architecture: Wazuh Indexer, Dashboard, and Manager using centralized endpoint monitoring agents.
 
 Automation Workflow Engine: Containerized n8n instances deployed via Docker.
@@ -51,6 +53,7 @@ Target Environment: Windows Server operating system configured within a controll
 
 
 **Operational Impact and Efficiency Metrics**
+
 In a typical security operations center, an analyst must manually pivot across multiple monitoring interfaces, threat intelligence feeds, and endpoint management tools to validate an alert, isolate a host, and document the investigation. This architecture automates the entire triage and containment process, shifting the timeline from minutes to seconds.
 
 Manual Detection and Containment: Generally requires 20 to 40 minutes depending on analyst availability, internal investigation processes, and system pivoting.
@@ -59,7 +62,8 @@ Automated Pipeline Execution: Completes detection, host isolation via native fir
 
 This represents a significant reduction in the window of opportunity for an attacker, preventing lateral movement or domain pivoting before a human analyst even opens the ticket.
 
-Technical Challenges and Engineering Solutions
+**Technical Challenges and Engineering Solutions**
+
 Developing distributed security integrations requires working through complex environmental barriers. Below are the key engineering hurdles encountered during the implementation of this pipeline and how they were resolved.
 
 1. The Defensive Feedback Loop Paradox
@@ -71,7 +75,8 @@ Modifications to core SIEM active-response blocks initially caused the main anal
 3. Data Isolation and Scope Limits in Automation Nodes
 Downstream ticketing steps and communication notifications were initially receiving empty text variables, forcing the local language model to hallucinate details using generic training data. In this specific orchestration environment, data evaluation default expressions look only at the output of the immediate preceding node. Because intermediate filtering and tagging nodes were stripping away the original event payload, the text fields arrived at the enrichment phase completely blank. This was resolved by refactoring the pipeline code to use absolute node referencing, forcing downstream nodes to draw data directly from the root webhook ingestion point regardless of intermediate steps.
 
-System Validation
+**System Validation**
+
 Active Host Isolation Policy
 The automated containment shield can be validated directly from the target host by inspecting the active firewall rule policies established by the endpoint agent:
 Get-NetFirewallRule | Where-Object { $_.DisplayName -like "*Wazuh*" } | Get-NetFirewallPortFilter
