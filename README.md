@@ -1,4 +1,5 @@
 **Active Defense SOAR Pipeline: Automated Threat Detection, AI Enrichment, and Network Containment**
+
 Project Overview
 This project documents the design and implementation of a closed-loop incident response ecosystem. The pipeline bridges the gap between threat detection and automated remediation by handling security telemetry across a distributed network. When a high-fidelity threat is detected on an endpoint, the system automatically isolates the compromised host at the network layer, enriches the alert context using a local large language model, logs a structured ticket into an enterprise case management system, and dispatches a detailed notification to the security team. By eliminating human latency from the containment loop, the system reduces the mean time to remediate from minutes to less than seven seconds.
 
